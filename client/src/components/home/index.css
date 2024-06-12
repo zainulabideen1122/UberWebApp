@@ -1,0 +1,63 @@
+.homeContainer
+{
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    height:100vw;
+    font-family: "Rubik", sans-serif;
+}
+
+
+.homeRightNavbar
+{
+    border-left: 2px solid #2d343684;
+}
+
+.bookRide
+{
+    margin: 2rem;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 0 15px #2d34362b;
+    border-radius: 10px;
+    padding-bottom: 2.5rem;
+}
+.bookRide div
+{
+    display: flex;
+    align-items: center; 
+    padding: 1rem;   
+    background: #ecf0f1;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+.bookRide div input
+{
+    border: none;
+    padding-left: 0.5rem;
+    outline: none;
+    background: #ecf0f1;
+    font-size: 1.1rem;
+}
+
+
+.bookRide div input::placeholder
+{
+    color: #2d3436;
+}
+
+.searchRideBtn
+{
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    background: #2d3436;
+    color: white; 
+    cursor: pointer;
+}
+
+.map-container {
+    height: 400px;
+  }

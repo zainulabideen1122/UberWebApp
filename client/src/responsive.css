@@ -1,0 +1,13 @@
+/*************************  login/register  ***********************/
+
+@media (max-width: 700px) {
+    .loginContainer
+    {
+        display: block;
+        padding: 0;
+    }
+    .loginPagePic
+    {
+        display: none;
+    }
+}

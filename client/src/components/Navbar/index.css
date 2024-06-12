@@ -1,0 +1,53 @@
+.navbar
+{
+    display: flex;
+    padding: 1rem 4rem;
+    font-family: "Rubik", sans-serif;
+    /* color: white;
+    background: #2d3436; */
+    border-bottom: 4px solid #2d34362d;
+}
+
+
+.navbarContent
+{
+    display: flex;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+
+.navbarContent *
+{
+    margin: 0 0.8rem;
+}
+
+
+.settingBtn
+{
+    cursor: pointer;
+    color: #c0c0c8;
+    transition: 0.3s all;
+}
+
+.settingBtn:hover
+{
+    transform: rotate(30deg);
+}
+
+.navbarContent button
+{
+    padding: 0.5rem 1.2rem;
+    background: #dfe6e9;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.navbarLogo h1
+{
+    letter-spacing: 6px;
+}
