@@ -1,24 +1,78 @@
+::-webkit-scrollbar {
+    width:7px;
+    border-radius: 10px;
+  }
+  /* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
 .homeContainer
 {
-    display: grid;
-    grid-template-columns: 2.5fr 1fr;
+    /* display: grid;
+    grid-template-columns: 2.5fr 1fr; */
+    display: flex;
+    flex-direction: row;
     height:100vw;
     font-family: "Rubik", sans-serif;
 }
 
+/* .mapContainer
+{
+    width: 75%;
+} */
+
+.openMapWidth
+{
+    width: 75%;
+}
+
+.closeMapWidth
+{
+    width: 99.99%;
+}
+
+.openRightNavbarWidth
+{
+    width: 25%;
+}
+
+.closeRightNavbarWidth
+{
+    width: 0.1%;
+}
 
 .homeRightNavbar
 {
     border-left: 2px solid #2d343684;
 }
 
+.openCloseBtn
+{
+    position: absolute;
+    top: 50vh;
+    transform: translateX(-15px);
+    background: #2d3436;
+    color: white;
+    padding: 0.4rem;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+}
+
 .bookRide
 {
-    margin: 2rem;
-    padding: 2rem 1.5rem;
+    margin: 1rem 2rem ;
+    padding: 1rem 1.5rem;
     box-shadow: 0 0 15px #2d34362b;
     border-radius: 10px;
-    padding-bottom: 2.5rem;
+    padding-bottom: 2rem;
 }
 .bookRide div
 {
@@ -57,7 +111,3 @@
     color: white; 
     cursor: pointer;
 }
-
-.map-container {
-    height: 400px;
-  }

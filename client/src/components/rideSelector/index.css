@@ -1,0 +1,46 @@
+
+.driversList
+{
+    height: 260px;
+    overflow-y:scroll;
+}
+
+.driverContainer
+{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    margin: 0rem 1rem;
+    align-items: center;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    /* border-bottom: 1px solid #2d34365e; */
+}
+
+.driverContainer:hover
+{
+    background-color: #2d3436;
+    color: white;
+}
+
+.rideFair
+{
+    font-weight: bolder;
+}
+
+.driverContainer img
+{
+    width: 80%;
+}
+
+
+.confirmRideBtn
+{
+    width: 93%;
+    margin: 0 1rem;
+    border: none;
+    outline: none;
+    background-color: #2d3436;
+    color: white;
+    padding: 1rem;
+    font-size: 1.1rem;
+}

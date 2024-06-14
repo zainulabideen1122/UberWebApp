@@ -6,6 +6,8 @@ import Home from "./components/home";
 import Register from "./components/auth/register";
 import Navbar from "./components/Navbar";
 import "mapbox-gl/dist/mapbox-gl.css"
+import LandingPage from "./components/Landing";
+import Settings from "./components/settings";
 
 
 function App()
@@ -19,7 +21,7 @@ function App()
 
 function AppContent() {
   const location = useLocation()
-  const isNavbar = location.pathname === '/auth/login' || location.pathname === '/auth/register'
+  const isNavbar = location.pathname === '/auth/login' || location.pathname === '/auth/register' || location.pathname === "/landing"
   return (
       <>
         { !isNavbar && <Navbar/>}
@@ -27,6 +29,9 @@ function AppContent() {
           <Route path="/auth/login" Component={Login}/>
           <Route path="/auth/register" Component={Register}/>
           <Route path="/" Component={Home}/>
+          <Route path="/landing" Component={LandingPage} />
+          <Route path="/settings" Component={Settings} />
+
         </Routes>
       </>
       

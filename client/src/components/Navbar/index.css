@@ -50,4 +50,6 @@
 .navbarLogo h1
 {
     letter-spacing: 6px;
+    cursor:  pointer;
 }
+
