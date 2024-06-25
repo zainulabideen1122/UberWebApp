@@ -30,6 +30,9 @@ function Home() {
     const dropOffTimeoutRef = useRef(null);
     const [profile, setProfile] = useState([]);
     const [closeRightNavbar, setCloseRightNavbar] = useState(false);
+    const [tempPickup, setTempPickup] = useState();
+    const [tempDropoff, setTempDropoff] = useState();
+    const [showDriversList, setShowDriversList] = useState(false);
         
 
     const options = {
@@ -82,12 +85,51 @@ function Home() {
                 navigate('/landing')
             }
         
+        
     }) 
 
     useEffect(()=>{
 navigator.geolocation.getCurrentPosition(success, error, options)
     }, [])
 
+
+    const getPickUpLocation = async(lng, lat)=>{
+        await axios.get(`https://api.mapbox.com/search/geocode/v6/reverse?`+
+            new URLSearchParams({
+              longitude:lng,
+              latitude:lat,
+              access_token: "pk.eyJ1IjoiemFpbjA3NDciLCJhIjoiY2x4Ym9iZnhiMnhpMDJpcXN6NWc1bjIyaiJ9.NzFvBMeMuCTIsiZ8_l51xw",
+              limit: 1
+            })
+          )
+          .then(res => {
+            //const location = res.data.features[0].place_name;
+            console.log('pickup=> ',res.data.features[0].properties.full_address)
+            setTempPickup(res.data.features[0].properties.full_address)
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
+
+    const getDropOffLocation = async(lng, lat)=>{
+        await axios.get(`https://api.mapbox.com/search/geocode/v6/reverse?`+
+            new URLSearchParams({
+              longitude:lng,
+              latitude:lat,
+              access_token: "pk.eyJ1IjoiemFpbjA3NDciLCJhIjoiY2x4Ym9iZnhiMnhpMDJpcXN6NWc1bjIyaiJ9.NzFvBMeMuCTIsiZ8_l51xw",
+              limit: 1
+            })
+          )
+          .then(res => {
+            //const location = res.data.features[0].place_name;
+            console.log('dropOff=> ',res.data.features[0].properties.full_address)
+            setTempDropoff(res.data.features[0].properties.full_address)
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
 
     const getPickUpCoordinates = async (pickup)=>{
         //const pickup = "Rawalpindi"
@@ -99,6 +141,7 @@ navigator.geolocation.getCurrentPosition(success, error, options)
             )
             .then(res=>{
                 setPickUpCoordinates(res.data.features[0].center)
+                console.log(res.data.features[0])
             })
             .catch(err=>{
                 console.log(err)
@@ -115,6 +158,7 @@ navigator.geolocation.getCurrentPosition(success, error, options)
             )
             .then(res=>{
                 setDropOffCoordinates(res.data.features[0].center)
+                console.log(res.data.features[0])
                 // setCoord(res.data.features[0].center)
             })
             .catch(err=>{
@@ -123,34 +167,43 @@ navigator.geolocation.getCurrentPosition(success, error, options)
             
     }
     
-    const handlePickUpChange = (e) => {
-        setPickUpLocation(e.target.value);
-        if (pickUpTimeoutRef.current) {
-            clearTimeout(pickUpTimeoutRef.current);
-        }
-        pickUpTimeoutRef.current = setTimeout(() => {
+    const handlePickUpChange = () => {
+        setPickUpLocation(tempPickup);
+        // if (pickUpTimeoutRef.current) {
+        //     clearTimeout(pickUpTimeoutRef.current);
+        // }
+        // pickUpTimeoutRef.current = setTimeout(() => {
             
-            getPickUpCoordinates(e.target.value);
-        }, 500);
+        //     getPickUpCoordinates(e.target.value);
+        // }, 500);
     };
 
 
-    const handleDropOffChange = (e) => {
-        setDropOffLocation(e.target.value);
-        if (dropOffTimeoutRef.current) {
-            clearTimeout(dropOffTimeoutRef.current);
-        }
-        dropOffTimeoutRef.current = setTimeout(() => {            
-            getDropOffCoordinates(e.target.value);
+    const handleDropOffChange = () => {
+        setDropOffLocation(tempDropoff);
+        // if (dropOffTimeoutRef.current) {
+        //     clearTimeout(dropOffTimeoutRef.current);
+        // }
+        // dropOffTimeoutRef.current = setTimeout(() => {            
+        //     getDropOffCoordinates(e.target.value);
             
-        }, 500);
+        // }, 500);
     };
 
+    function locationPicker(e){
+        console.log(e.lngLat)
+        getDropOffLocation(e.lngLat.lng,e.lngLat.lat)
+        getPickUpLocation(pickUpCoordinates[0], pickUpCoordinates[1])
+        setPickUpCoordinates([pickUpCoordinates[0], pickUpCoordinates[1]])
+        setDropOffCoordinates([e.lngLat.lng,e.lngLat.lat])
+        setShowDriversList(true)
+    }
 
     const memoizedMap = useMemo(() => (
         <Map 
             pickUpCoordinates={pickUpCoordinates}
             dropOffCoordinates={dropOffCoordinates}
+            locationPicker={locationPicker}
         />
     ), [pickUpCoordinates, dropOffCoordinates]);
 
@@ -160,8 +213,22 @@ navigator.geolocation.getCurrentPosition(success, error, options)
         setCloseRightNavbar(!closeRightNavbar);
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
-        }, 0); // Adjust the timeout as necessary to ensure the transition is complete
+        }, 200);
     };
+
+
+    const handleSearchRide = ()=>{
+        // handlePickUpChange();
+        // handleDropOffChange();
+        console.log("z")
+        setShowDriversList(true)
+        setPickUpLocation(tempPickup);
+        getPickUpCoordinates(tempPickup);
+        setDropOffLocation(tempDropoff);
+        getDropOffCoordinates(tempDropoff);
+
+
+    }
     
 
     return ( 
@@ -178,19 +245,19 @@ navigator.geolocation.getCurrentPosition(success, error, options)
                     <h1>Book a Ride</h1>
                     <div className="pickup">
                         <FaLocationCrosshairs />
-                        <input type="text" id="pickup" placeholder="Pickup" value={pickUpLocation} autoComplete="address-line1" onChange={handlePickUpChange} />
+                        <input type="text" id="pickup" placeholder="Pickup" value={tempPickup} autoComplete="address-line1" onChange={(e)=>setTempPickup(e.target.value)} />
                     </div>
                     <div className="dropoff">
                         <FaLocationDot />
-                        <input type="text" id="dropoff" placeholder="Dropoff" value={dropOffLocation} onChange={handleDropOffChange} />
+                        <input type="text" id="dropoff" placeholder="Dropoff" value={tempDropoff} onChange={(e)=>setTempDropoff(e.target.value)} />
                     </div>
-                    <button className="searchRideBtn">Search Ride</button>
+                    <button className="searchRideBtn" onClick={handleSearchRide}>Search Ride</button>
                 </div>
                 <div className="confirmRideContainer">
-                    <RideSelector 
+                    {showDriversList && <RideSelector 
                          pickUpCoordinates={pickUpCoordinates}
                          dropOffCoordinates={dropOffCoordinates}
-                    />
+                    />}
                 </div>
             </div>
         </div>

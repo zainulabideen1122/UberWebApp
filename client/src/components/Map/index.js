@@ -11,15 +11,14 @@ function Map(props) {
 
   
     const mapContainer = useRef(null);
-    const map = useRef(null);
 
     useEffect(() => {
 
         const map = new mapboxgl.Map({
           container: mapContainer.current,
-          style: 'mapbox://styles/drakosi/ckvcwq3rwdw4314o3i2ho8tph',
-          center: [69.3451,30.3753],
-          zoom: 5
+          style: 'mapbox://styles/mapbox/standard',
+          zoom: 15,
+          pitch: 60, // pitch in degrees
         });
         
         //zoom in/out, rotation controls
@@ -36,6 +35,10 @@ function Map(props) {
           })
         )
 
+        map.on('click', (e)=>{
+          // console.log(e.lngLat)
+          props.locationPicker(e);
+        })
         
 
         if(props.pickUpCoordinates && props.dropOffCoordinates)
@@ -43,6 +46,14 @@ function Map(props) {
               axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving/${props.pickUpCoordinates[0]},${props.pickUpCoordinates[1]};${props.dropOffCoordinates[0]},${props.dropOffCoordinates[1]}?access_token=${accessToken}`)
               .then(res=>{
                   addRouteToMap(map, res.data.routes[0])
+                  map.fitBounds([
+                    [props.pickUpCoordinates[0], props.pickUpCoordinates[1]],
+                    [props.dropOffCoordinates[0], props.dropOffCoordinates[1]]
+                  ],{
+                    padding:200,
+                    zoom:11,
+                    pitch: 50,
+                  })
               })
               .catch(err=>{
                 console.log(err)
@@ -62,13 +73,7 @@ function Map(props) {
         
         if(props.pickUpCoordinates && props.dropOffCoordinates)
           {
-            map.fitBounds([
-              [props.pickUpCoordinates[0], props.pickUpCoordinates[1]],
-              [props.dropOffCoordinates[0], props.dropOffCoordinates[1]]
-            ],{
-              padding:100,
-              zoom:15
-            })
+            
           }
 
           if(props.pickUpCoordinates && !props.dropOffCoordinates)
@@ -79,6 +84,7 @@ function Map(props) {
               ],{
   
                 zoom:15
+          
               })
             }
 

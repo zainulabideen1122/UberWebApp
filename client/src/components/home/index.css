@@ -12,18 +12,14 @@
   }
 .homeContainer
 {
-    /* display: grid;
-    grid-template-columns: 2.5fr 1fr; */
+
     display: flex;
     flex-direction: row;
     height:100vw;
     font-family: "Rubik", sans-serif;
 }
 
-/* .mapContainer
-{
-    width: 75%;
-} */
+
 
 .openMapWidth
 {
@@ -48,6 +44,7 @@
 .homeRightNavbar
 {
     border-left: 2px solid #2d343684;
+    transition: 0.2s ease-in-out;
 }
 
 .openCloseBtn
